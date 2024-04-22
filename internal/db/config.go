@@ -1,6 +1,6 @@
 package db
 
-import "ads-platform/helpers"
+import "ad-platforms/helpers"
 
 var DatabaseConfig = DatabaseConfigType{
 	Host:  helpers.GetEnv("DB_HOST"),
