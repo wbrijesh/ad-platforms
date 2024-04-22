@@ -61,7 +61,7 @@ func Register(c echo.Context) error {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	encodedToken, err := token.SignedString([]byte("ad-platforms-secret-key"))
+	encodedToken, err := token.SignedString([]byte(helpers.GetEnv("JWT_SIGNING_KEY")))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error while generating token"})
 	}

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"net/http"
 	"strconv"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 
 	"ad-platforms/internal/auth"
@@ -14,23 +14,20 @@ import (
 func main() {
 	config := server.Config
 	e := echo.New()
-
 	database := db.GetDBConnection()
 
-	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+	userRoutes := e.Group("/" + config.Version)
+	userRoutes.Use(echojwt.WithConfig(auth.JWTConfig))
+
+	userRoutes.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return db.DatabaseMiddleware(next, database)
 	})
 
-	e.GET("/"+config.Version+"/health-check", func(c echo.Context) error {
-		response := server.ResponseType{
-			Result: "OK",
-			Error:  "",
-		}
+	// publicly accessible routes
+	e.GET("/health-check", server.HealthCheck)
 
-		return c.JSON(http.StatusOK, response)
-	})
-
-	e.POST("/"+config.Version+"/register", auth.Register)
+	// protected routes
+	userRoutes.POST("/register", auth.Register)
 
 	e.Logger.Fatal(e.Start(":" + strconv.Itoa(config.Port)))
 }
