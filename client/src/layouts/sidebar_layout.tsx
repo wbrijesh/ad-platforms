@@ -11,6 +11,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { SiGoogleads } from "react-icons/si";
 import { PiTwitterLogoFill } from "react-icons/pi";
 import { MdLogout } from "react-icons/md";
+import Link from "next/link";
 
 const navigation = [
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
@@ -85,7 +86,7 @@ const DesktopSidebar = ({
                     className="flex flex-col  items-center w-full"
                     key={item.name}
                   >
-                    <a
+                    <Link
                       href={item.href}
                       className={classNames(
                         item.current
@@ -104,14 +105,14 @@ const DesktopSidebar = ({
                         aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
 
                     {/* render subitems */}
                     {item.subItems && (
                       <div className="ml-14 w-full">
                         {item.subItems.map((subItem: any) => (
                           <div className="mr-7" key={subItem.name}>
-                            <a
+                            <Link
                               href={subItem.href}
                               className={classNames(
                                 subItem.current
@@ -132,7 +133,7 @@ const DesktopSidebar = ({
                                 />
                               )}
                               {subItem.name}
-                            </a>
+                            </Link>
                           </div>
                         ))}
                       </div>
@@ -146,7 +147,7 @@ const DesktopSidebar = ({
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item: any) => (
                   <li className="flex items-center h-7 w-full" key={item.name}>
-                    <a
+                    <Link
                       href={item.href}
                       className={classNames(
                         item.current
@@ -165,7 +166,7 @@ const DesktopSidebar = ({
                         aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -242,11 +243,7 @@ const MobileTransitionSidebar = ({
               {/* Sidebar component, swap this element with another sidebar if you like */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
                 <div className="flex h-16 shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                  />
+                  <UserProfile name="--" role="--" />
                 </div>
                 <nav className="flex flex-1 flex-col">
                   <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -254,7 +251,7 @@ const MobileTransitionSidebar = ({
                       <ul role="list" className="-mx-2 space-y-1">
                         {navigation.map((item: any) => (
                           <li key={item.name}>
-                            <a
+                            <Link
                               href={item.href}
                               className={classNames(
                                 item.current
@@ -273,7 +270,7 @@ const MobileTransitionSidebar = ({
                                 aria-hidden="true"
                               />
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -307,14 +304,10 @@ const MobileNavbar = ({
       <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">
         Dashboard
       </div>
-      <a href="#">
+      <Link href="#">
         <span className="sr-only">Your profile</span>
-        <img
-          className="h-8 w-8 rounded-full bg-gray-50"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
-        />
-      </a>
+        <UserProfile name="--" role="--" />
+      </Link>
     </div>
   );
 };
