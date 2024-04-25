@@ -7,24 +7,26 @@ import {
   CalendarIcon,
 } from "@heroicons/react/16/solid";
 import ParseJWT from "@/lib/jwt";
-import { FaFacebookSquare } from "react-icons/fa";
-import { SiGoogleads } from "react-icons/si";
-import { PiTwitterLogoFill } from "react-icons/pi";
-import { MdLogout } from "react-icons/md";
 import Link from "next/link";
+import {
+  FacebookIcon,
+  GoogleAdsIcon,
+  TwitterIcon,
+  LogoutIcon,
+} from "@/components/custom-icons/temporary";
 
 const navigation = [
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Settings", href: "#", icon: Cog8ToothIcon, current: false },
-  { name: "Log Out", href: "#", icon: MdLogout, current: false },
+  { name: "Log Out", href: "#", icon: LogoutIcon, current: false },
 ];
 
 const platforms = [
   {
     name: "Facebook Ads",
     href: "#",
-    icon: FaFacebookSquare,
+    icon: FacebookIcon,
     current: false,
     subItems: [
       { name: "Ad Accounts", href: "#", current: false },
@@ -33,8 +35,8 @@ const platforms = [
       { name: "Ads", href: "#", current: false },
     ],
   },
-  { name: "Google Ads", href: "#", icon: SiGoogleads, current: false },
-  { name: "Twitter Ads", href: "#", icon: PiTwitterLogoFill, current: false },
+  { name: "Google Ads", href: "#", icon: GoogleAdsIcon, current: false },
+  { name: "Twitter Ads", href: "#", icon: TwitterIcon, current: false },
 ];
 
 function classNames(...classes: string[]) {
