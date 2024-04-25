@@ -1,11 +1,23 @@
-import LoginButton from "@/components/login-btn";
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
+import { SetCookie } from "@/lib/cookies";
 
-export default function Home() {
+const HomePage = () => {
   return (
-    <MainLayout>
-      <h1 className="text-xl font-medium mb-4">Log in with Facebook</h1>
-      <LoginButton />
-    </MainLayout>
+    <AuthLayout>
+      <p className="mb-5">
+        Todo: Build a non ideal state to select platforms from
+      </p>
+      <button
+        className="bg-blue-500 px-[8px] py-[6px] rounded transition duration-300 hover:bg-blue-600 text-white text-sm font-medium"
+        onClick={() => {
+          SetCookie("ad_platforms_token", "", 0);
+          window.location.reload();
+        }}
+      >
+        Sign Out
+      </button>
+    </AuthLayout>
   );
-}
+};
+
+export default HomePage;

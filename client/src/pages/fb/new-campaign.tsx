@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import {
@@ -49,7 +49,7 @@ export default function Home() {
   }
 
   return (
-    <MainLayout>
+    <AuthLayout>
       <h1 className="text-xl font-medium mb-4">Create a new campaign</h1>
 
       {session && (
@@ -136,6 +136,6 @@ export default function Home() {
           </form>
         </>
       )}
-    </MainLayout>
+    </AuthLayout>
   );
 }

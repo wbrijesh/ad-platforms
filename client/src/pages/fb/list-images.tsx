@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
@@ -47,7 +47,7 @@ const ListImages = () => {
   }, []);
 
   return (
-    <MainLayout>
+    <AuthLayout>
       <h1 className="text-xl font-medium mb-4">Available Images</h1>
 
       {isLoading && <p>Loading images...</p>}
@@ -63,7 +63,7 @@ const ListImages = () => {
           ))}
         </ul>
       )}
-    </MainLayout>
+    </AuthLayout>
   );
 };
 

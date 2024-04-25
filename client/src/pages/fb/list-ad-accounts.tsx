@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -12,14 +12,14 @@ export default function ListAdAccountsPage() {
 
   function getAdAccounts() {
     fetch(
-      `https://graph.facebook.com/v19.0/me/adaccounts?fields=id,name,account_id&access_token=${access_token}`
+      `https://graph.facebook.com/v19.0/me/adaccounts?fields=id,name,account_id&access_token=${access_token}`,
     )
       .then((response) => response && response.json())
       .then((data) => setAdAccounts(data.data));
   }
 
   return (
-    <MainLayout>
+    <AuthLayout>
       {session && (
         <>
           <h1 className="text-xl font-medium mb-4">List of Ad Accounts</h1>
@@ -53,6 +53,6 @@ export default function ListAdAccountsPage() {
           )}
         </>
       )}
-    </MainLayout>
+    </AuthLayout>
   );
 }

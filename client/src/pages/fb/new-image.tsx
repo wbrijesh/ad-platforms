@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -63,7 +63,7 @@ export default function NewIamge() {
   }
 
   return (
-    <MainLayout>
+    <AuthLayout>
       <h1 className="text-xl font-medium mb-4">Upload Image for Ad Creative</h1>
 
       <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -73,6 +73,6 @@ export default function NewIamge() {
         {imageHash && <p>Image uploaded! Hash: {imageHash}</p>}
         {error && <p>Error: {error}</p>}
       </div>
-    </MainLayout>
+    </AuthLayout>
   );
 }

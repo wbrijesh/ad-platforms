@@ -1,10 +1,10 @@
-import MainLayout from "@/layouts/main"
+import AuthLayout from "@/layouts/main"
 
 const AdInsightPage = () => {
   return (
-    <MainLayout>
+    <AuthLayout>
       <p>hello</p>
-    </MainLayout>
+    </AuthLayout>
   )
 }
 

@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import {
@@ -149,7 +149,7 @@ const NewAdsetPage = () => {
   }, [endTime]);
 
   return (
-    <MainLayout>
+    <AuthLayout>
       <h1 className="text-xl font-medium mb-4">Create a new ad set</h1>
       <button
         className="mb-4 px-2 py-1 rounded-sm bg-blue-600 text-white hover:bg-blue-700 transition"
@@ -325,7 +325,7 @@ const NewAdsetPage = () => {
           </details>
         </pre>
       )}
-    </MainLayout>
+    </AuthLayout>
   );
 };
 

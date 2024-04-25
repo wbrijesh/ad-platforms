@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -19,6 +19,80 @@ const config = {
     },
     extend: {
       colors: {
+        ds: {
+          zinc: {
+            150: "#ECECEE",
+            250: "#DCDCE0",
+            350: "#BBBBC1",
+            450: "#898992",
+            550: "#62626B",
+            650: "#494951",
+            750: "#333338",
+            850: "#202023",
+          },
+          gray: {
+            1: "#ffffff",
+            2: "#eeeffc",
+            3: "#e0e1ec",
+            4: "#d2d3e0",
+            5: "#b0b5c0",
+            6: "#6b6f76",
+            7: "#8d8ba3",
+            8: "#858699",
+            9: "#4c4f6b",
+            10: "#4d4f69",
+            11: "#444556",
+            12: "#3c3d53",
+            13: "#393a4b",
+            14: "#313248",
+            15: "#292b41",
+            16: "#26293e",
+            17: "#2c2d42",
+            18: "#26273b",
+            19: "#292a35",
+            20: "#1d1e2b",
+            21: "#191a23",
+            22: "#151621",
+            23: "#21232e",
+            24: "#272832",
+            25: "#2c2d3c",
+            26: "#1c1d2a",
+            27: "#1c1d2a",
+            28: "#1f2130",
+          },
+          ui: {
+            "checkbox-border": "#f4f3ff",
+            "letter-background": "#f2f2f7",
+            background: "#efeff4",
+            "icon-default": "#ebe9fe",
+            "button-background": "#e7e7ea",
+            divider: "#d4d4db",
+            "button-issues": "#d5d5dc",
+            "button-issues-hover": "#dbdbe2",
+            "file-background": "#dedfe4",
+            "background-issue": "#d5d5dc",
+            "button-issues-border-hover": "#b8b8c5",
+            "background-sub-issue": "#b9b9bd",
+            "sub-issue-hover": "#a4a4a9",
+            "background-command-bar": "#8e8f95",
+            "border-command-bar": "#72727b",
+            caret: "#6e5ed2",
+            "tooltip-background": "#1f2029",
+            "app-background": "#181921",
+          },
+          decoration: {
+            teal: "#00FFD1",
+            red: "#FF0000",
+            "red-light": "#FF0000",
+            mustard: "#FFD700",
+            yellow: "#FFD700",
+            orange: "#FFA500",
+            purple: "#800080",
+            blue: "#0000FF",
+            gray: "#808080",
+            green: "#008000",
+          },
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -75,6 +149,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

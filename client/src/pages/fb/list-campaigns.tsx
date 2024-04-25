@@ -1,4 +1,4 @@
-import MainLayout from "@/layouts/main";
+import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -53,7 +53,7 @@ export default function ListCampaigns() {
   }
 
   return (
-    <MainLayout>
+    <AuthLayout>
       {session && (
         <>
           {localStorage.getItem("ad_account_id") && (
@@ -114,6 +114,6 @@ export default function ListCampaigns() {
           )}
         </>
       )}
-    </MainLayout>
+    </AuthLayout>
   );
 }
