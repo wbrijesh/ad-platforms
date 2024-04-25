@@ -12,14 +12,24 @@ import (
 	"ad-platforms/helpers"
 )
 
-func Register(c echo.Context) error {
-	db := c.Get("db").(*sql.DB)
+type BaseHandler struct {
+	db *sql.DB
+}
+
+func NewBaseHandler(db *sql.DB) *BaseHandler {
+	return &BaseHandler{
+		db: db,
+	}
+}
+
+func (h *BaseHandler) Register(c echo.Context) error {
+	db := h.db
 
 	var user User
 
 	err := c.Bind(&user)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Invalid request body"})
+		return c.JSON(http.StatusBadRequest, map[string]string{"success": "false", "message": "Invalid request body", "token": ""})
 	}
 
 	existingUser := db.QueryRow("SELECT * FROM users WHERE email = ?", user.Email)
@@ -28,25 +38,27 @@ func Register(c echo.Context) error {
 		return c.JSON(
 			http.StatusBadRequest,
 			map[string]string{
+				"success": "true",
 				"message": "User with this email already exists",
+				"token":   "",
 			},
 		)
 	}
 
 	hashedPassword, err := helpers.HashPassword(user.Password)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error while hashing password"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"success": "false", "message": "Error while hashing password", "token": ""})
 	}
 	user.ID = helpers.GenerateUUID()
 	user.Password = hashedPassword
 
 	createUserQuery := `
-    INSERT INTO users (id, first_name, last_name, email, password, role, verified)
-    VALUES (?, ?, ?, ?, ?, ?, ?);
+    INSERT INTO users (id, first_name, last_name, email, password, role, verified, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
   `
-	_, err = db.Exec(createUserQuery, user.ID, user.FirstName, user.LastName, user.Email, user.Password, user.Role, user.Verified)
+	_, err = db.Exec(createUserQuery, user.ID, user.FirstName, user.LastName, user.Email, user.Password, user.Role, user.Verified, time.Now().String(), time.Now().String())
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error while inserting in database"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"success": "false", "message": "Error while inserting in database", "token": ""})
 	}
 
 	claims := &JwtCustomClaims{
@@ -63,10 +75,11 @@ func Register(c echo.Context) error {
 
 	encodedToken, err := token.SignedString([]byte(helpers.GetEnv("JWT_SIGNING_KEY")))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error while generating token"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"success": "false", "message": "Error while generating token", "token": ""})
 	}
 
 	return c.JSON(http.StatusOK, map[string]string{
+		"success": "true",
 		"message": "User created successfully",
 		"token":   encodedToken,
 	})

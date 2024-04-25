@@ -1,11 +1,15 @@
 all: build
 
+run-client:
+	cd client && bun run dev
+
 build:
 	echo "Building..."
 	go build -o main cmd/main.go
 
-run:
-	go run cmd/main.go
+run-server:
+	air
+
 
 docker-run:
 	@if docker compose up 2>/dev/null; then \
