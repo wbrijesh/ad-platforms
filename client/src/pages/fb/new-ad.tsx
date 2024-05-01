@@ -29,8 +29,8 @@ const NewAdPage = () => {
   function getAdsetsFromCampaign() {
     fetch(
       `https://graph.facebook.com/v19.0/${localStorage.getItem(
-        "ad_account_id"
-      )}/adsets?fields=name&access_token=${access_token}`
+        "ad_account_id",
+      )}/adsets?fields=name&access_token=${access_token}`,
     )
       .then((response) => response.json())
       .then((data) => setAdsets(data.data));
@@ -92,7 +92,7 @@ const NewAdPage = () => {
 
   async function fetchAdImages() {
     const endpoint = `https://graph.facebook.com/v19.0/${localStorage.getItem(
-      "ad_account_id"
+      "ad_account_id",
     )}/adimages?fields=hash,name&access_token=${access_token}`;
 
     try {
@@ -114,7 +114,7 @@ const NewAdPage = () => {
 
     fetch(
       `https://graph.facebook.com/v19.0/${localStorage.getItem(
-        "ad_account_id"
+        "ad_account_id",
       )}/ads?fields=name`,
       {
         method: "POST",
@@ -138,7 +138,7 @@ const NewAdPage = () => {
           status: adStatus,
           access_token: access_token,
         }),
-      }
+      },
     )
       .then((response) => response.json())
       .then((data) => setCreateAdResponse(data));

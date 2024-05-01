@@ -9,7 +9,7 @@ const ListImages = () => {
 
   async function fetchAdImages() {
     const endpoint = `https://graph.facebook.com/v12.0/${localStorage.getItem(
-      "ad_account_id"
+      "ad_account_id",
     )}/adimages?fields=hash,name&access_token=${access_token}`;
 
     try {

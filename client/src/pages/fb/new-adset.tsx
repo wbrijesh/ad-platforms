@@ -27,7 +27,7 @@ const NewAdsetPage = () => {
     const ad_account_id = localStorage.getItem("ad_account_id");
 
     fetch(
-      `https://graph.facebook.com/v12.0/${ad_account_id}/campaigns?fields=name,effective_status&access_token=${access_token}&filtering=[{'field':'effective_status','operator':'IN','value':['PAUSED','ACTIVE']}]`
+      `https://graph.facebook.com/v12.0/${ad_account_id}/campaigns?fields=name,effective_status&access_token=${access_token}&filtering=[{'field':'effective_status','operator':'IN','value':['PAUSED','ACTIVE']}]`,
     )
       .then((response) => response.json())
       .then((data) =>
@@ -36,8 +36,8 @@ const NewAdsetPage = () => {
             id: campaign.id,
             name: campaign.name,
             effective_status: campaign.effective_status,
-          }))
-        )
+          })),
+        ),
       );
   }
 
@@ -109,7 +109,7 @@ const NewAdsetPage = () => {
         daily_budget: dailyBudget,
         bid_amount: bidAmount,
         campaign_id: activeAndPausedCampaigns?.find(
-          (campaign) => campaign.name === selectedCampaign
+          (campaign) => campaign.name === selectedCampaign,
         )?.id,
         targeting: {
           geo_locations: {

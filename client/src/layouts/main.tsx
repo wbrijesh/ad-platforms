@@ -39,13 +39,25 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       {adPlatformsToken ||
       router.pathname == "/register" ||
       router.pathname == "/sign-in" ? (
-        <SidebarLayout adPlatformsToken={adPlatformsToken}>
-          {isFacebookRoute ? (
-            <FacebookAuthWrapper>{children}</FacebookAuthWrapper>
-          ) : (
-            <>{children}</>
-          )}
-        </SidebarLayout>
+        isFacebookRoute ? (
+          <FacebookAuthWrapper>
+            <SidebarLayout adPlatformsToken={adPlatformsToken}>
+              {children}
+            </SidebarLayout>
+          </FacebookAuthWrapper>
+        ) : (
+          <>
+            {router.pathname.startsWith("/google") ? (
+              <SidebarLayout adPlatformsToken={adPlatformsToken}>
+                {children}
+              </SidebarLayout>
+            ) : (
+              <SidebarLayout adPlatformsToken={adPlatformsToken}>
+                {children}
+              </SidebarLayout>
+            )}
+          </>
+        )
       ) : (
         <Fragment>
           <p className="mb-5">Please sign in to access this page</p>

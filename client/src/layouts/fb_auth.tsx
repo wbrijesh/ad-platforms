@@ -29,10 +29,6 @@ const FacebookAuthWrapper = ({ children }: { children: React.ReactNode }) => {
     if (!isFacebookRoute) {
       router.push("/");
     }
-
-    if (isFacebookRoute && !session && router.pathname !== "/fb/authenticate") {
-      router.push("/fb/authenticate");
-    }
   }, [session, isFacebookRoute]);
 
   return (

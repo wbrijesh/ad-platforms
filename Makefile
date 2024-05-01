@@ -10,7 +10,14 @@ build:
 run-server:
 	air
 
+docker-compose:
+	docker compose up --remove-orphans
 
+compose-up-detached:
+	docker compose up -d
+
+compose-down:
+	docker compose down
 docker-run:
 	@if docker compose up 2>/dev/null; then \
 		: ; \

@@ -24,7 +24,7 @@ const LoginButton = () => {
     <div className="mb-4">
       <button
         className="px-2 py-1 rounded-sm bg-blue-600 text-white hover:bg-blue-700 transition"
-        onClick={() => signIn()}
+        onClick={() => signIn("facebook_business")}
       >
         Sign in
       </button>

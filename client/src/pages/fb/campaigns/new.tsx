@@ -8,16 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import FacebookPageLayout from "@/components/facebook-page-layout";
 
 export default function Home() {
   const { data: session } = useSession();
 
   const [objective, setObjective] = useState<string>("LINK_CLICKS");
-  // const [lifetimeBudget, setLifetimeBudget] = useState<number>();
   const [status, setStatus] = useState<string>("PAUSED"); // ACTIVE, PAUSED, DELETED, ARCHIVED
-  // const [dailyBudget, setDailyBudget] = useState<number>();
-  // const [startTime, setStartTime] = useState<string>();
-  // const [endTime, setEndTime] = useState<string>();
   const [newCampaignName, setNewCampaignName] = useState<string>();
 
   const [createNewCampaignResponse, setCreateNewCampaignResponse] = useState();
@@ -42,14 +39,14 @@ export default function Home() {
           special_ad_categories: ["NONE"],
           access_token: access_token,
         }),
-      }
+      },
     )
       .then((response) => response.json())
       .then((data) => setCreateNewCampaignResponse(data));
   }
 
   return (
-    <AuthLayout>
+    <FacebookPageLayout>
       <h1 className="text-xl font-medium mb-4">Create a new campaign</h1>
 
       {session && (
@@ -136,6 +133,6 @@ export default function Home() {
           </form>
         </>
       )}
-    </AuthLayout>
+    </FacebookPageLayout>
   );
 }

@@ -1,16 +1,37 @@
-version: '3.8'
-
 services:
-  psql:
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  ad_platforms:
+    build: .
     ports:
-      - "${DB_PORT}:5432"
-    volumes:
-      - psql_volume:/var/lib/postgresql/data
+      - 4000:4000
+#    networks:
+#      - monitoring
+#  prometheus:
+#    image: prom/prometheus:latest
+#    ports:
+#      - 9090:9090
+#    volumes:
+#      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+#    networks:
+#      - monitoring
+#  grafana:
+#    image: grafana/grafana:latest
+#    container_name: grafana
+#    restart: unless-stopped
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=brijesh
+#      - GF_SECURITY_ADMIN_PASSWORD=password
+#    volumes:
+#      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+#      - grafana:/var/lib/grafana
+#    ports:
+#      - '4001:3000'
+#    networks:
+#      - monitoring
 
-volumes:
-  psql_volume:
+#volumes:
+#  grafana:
+#
+#networks:
+#  monitoring:
+#      driver: bridge
+

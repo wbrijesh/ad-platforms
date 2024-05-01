@@ -8,8 +8,9 @@ type ServerConfigType struct {
 }
 
 type ResponseType struct {
-	Result interface{}
-	Error  string
+	Result    interface{}
+	Error     string
+	RequestID string
 }
 
 type BaseHandler struct {

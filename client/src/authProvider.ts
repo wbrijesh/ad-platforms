@@ -24,8 +24,8 @@ const CustomFacebookBusinessProvider = {
       });
     },
   },
-  clientId: process.env.FACEBOOK_CLIENT_ID,
-  clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+  clientId: process.env.DEV_FACEBOOK_CLIENT_ID,
+  clientSecret: process.env.DEV_FACEBOOK_CLIENT_SECRET,
 
   profile(profile) {
     return {

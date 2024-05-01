@@ -40,7 +40,7 @@ export default function NewIamge() {
 
     // 2. Determine Upload Endpoint (replace with your ad account setup)
     const uploadEndpoint = `https://graph.facebook.com/v12.0/${localStorage.getItem(
-      "ad_account_id"
+      "ad_account_id",
     )}/adimages`;
 
     // 3. Fetch API Call

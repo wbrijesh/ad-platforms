@@ -14,6 +14,7 @@ import {
   TwitterIcon,
   LogoutIcon,
 } from "@/components/custom-icons/temporary";
+import { useRouter } from "next/router";
 
 const navigation = [
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
@@ -25,18 +26,27 @@ const navigation = [
 const platforms = [
   {
     name: "Facebook Ads",
-    href: "#",
+    href: "/fb",
     icon: FacebookIcon,
     current: false,
     subItems: [
-      { name: "Ad Accounts", href: "#", current: false },
-      { name: "Campaigns", href: "#", current: false },
+      { name: "Campaigns", href: "/fb/campaigns", current: false },
       { name: "Ad Sets", href: "#", current: false },
       { name: "Ads", href: "#", current: false },
     ],
   },
-  { name: "Google Ads", href: "#", icon: GoogleAdsIcon, current: false },
-  { name: "Twitter Ads", href: "#", icon: TwitterIcon, current: false },
+  {
+    name: "Google Ads",
+    href: "/google",
+    icon: GoogleAdsIcon,
+    current: false,
+    subItems: [
+      { name: "Campaigns", href: "/google/campaigns", current: false },
+      { name: "Ad Groups", href: "/google/adgroups", current: false },
+      { name: "Ads", href: "/google/ads", current: false },
+    ],
+  },
+  { name: "Twitter Ads", href: "/404", icon: TwitterIcon, current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -69,6 +79,7 @@ const DesktopSidebar = ({
   navigation: any;
   adPlatformsToken: string;
 }) => {
+  const router = useRouter();
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-60 lg:flex-col bg-slate-100">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -91,7 +102,7 @@ const DesktopSidebar = ({
                     <Link
                       href={item.href}
                       className={classNames(
-                        item.current
+                        router.pathname === item.href
                           ? "bg-ds-zinc-250 text-ds-decoration-blue"
                           : "hover:bg-ds-zinc-250 text-zinc-700",
                         "group flex gap-x-3 rounded-md px-2 py-1.5 text-sm w-full hover:text-ds-decoration-blue",
@@ -99,7 +110,7 @@ const DesktopSidebar = ({
                     >
                       <item.icon
                         className={classNames(
-                          item.current
+                          router.pathname === item.href
                             ? "text-blue-600"
                             : "text-zinc-600 group-hover:text-blue-600",
                           "h-4 w-4 shrink-0 flex items-center mt-0.5",
@@ -110,14 +121,14 @@ const DesktopSidebar = ({
                     </Link>
 
                     {/* render subitems */}
-                    {item.subItems && (
+                    {item.subItems && router.pathname.startsWith(item.href) && (
                       <div className="ml-14 w-full">
                         {item.subItems.map((subItem: any) => (
                           <div className="mr-7" key={subItem.name}>
                             <Link
                               href={subItem.href}
                               className={classNames(
-                                subItem.current
+                                router.pathname === subItem.href
                                   ? "bg-ds-zinc-250 text-ds-decoration-blue"
                                   : "hover:bg-ds-zinc-250 text-zinc-700",
                                 "group flex gap-x-3 rounded-md px-2 py-1.5 text-sm w-full hover:text-ds-decoration-blue",
@@ -126,7 +137,7 @@ const DesktopSidebar = ({
                               {subItem.icon && (
                                 <subItem.icon
                                   className={classNames(
-                                    subItem.current
+                                    router.pathname === subItem.href
                                       ? "text-blue-600"
                                       : "text-zinc-600 group-hover:text-blue-600",
                                     "h-4 w-4 shrink-0 flex items-center mt-0.5",
@@ -152,7 +163,7 @@ const DesktopSidebar = ({
                     <Link
                       href={item.href}
                       className={classNames(
-                        item.current
+                        router.pathname === item.href
                           ? "bg-ds-zinc-250 text-zinc-800"
                           : "hover:bg-ds-zinc-250 text-zinc-700",
                         "group flex gap-x-3 rounded-md px-2 py-1.5 text-sm w-full hover:text-zinc-800",
@@ -160,7 +171,7 @@ const DesktopSidebar = ({
                     >
                       <item.icon
                         className={classNames(
-                          item.current
+                          router.pathname === item.href
                             ? "text-blue-600"
                             : "text-zinc-600 group-hover:text-blue-600",
                           "h-4 w-4 shrink-0 flex items-center mt-0.5",
@@ -339,7 +350,7 @@ export default function SidebarLayout({
 
       <MobileNavbar setSidebarOpen={setSidebarOpen} />
 
-      <main className="m-5 lg:pl-60">{children}</main>
+      <main className="lg:pl-60">{children}</main>
     </div>
   );
 }
