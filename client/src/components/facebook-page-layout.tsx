@@ -29,23 +29,37 @@ const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
     setMySession(session);
   }, [session]);
 
-  function getAdAccounts() {
-    !mySession.access_token && router.push("/fb/authenticate");
+  // function getAdAccounts() {
+  //   !mySession.access_token && router.push("/fb/authenticate");
+  //
+  //   fetch("http://localhost:4000/v1/fb/ad-accounts", {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + GetCookie("ad_platforms_token"),
+  //       access_token: mySession && mySession.access_token,
+  //     },
+  //   })
+  //     .then((response) => response && response.json())
+  //     .then((data) => setAdAccounts(data.ad_accounts.data));
+  // }
 
-    fetch("http://localhost:4000/v1/fb/ad-accounts", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + GetCookie("ad_platforms_token"),
-        access_token: mySession && mySession.access_token,
-      },
-    })
-      .then((response) => response && response.json())
-      .then((data) => setAdAccounts(data.ad_accounts.data));
+  function getAdAccounts() {
+    !mySession.accessToken && router.push("/fb/authenticate");
+
+    fetch(
+      `https://graph.facebook.com/v19.0/me/adaccounts?fields=id,name,account_id&access_token=${mySession.accessToken}`,
+    )
+      .then((response) => response.json())
+      .then((data: any) => {
+        localStorage.setItem("fb_ad_accounts", JSON.stringify(data.data));
+        console.log("accounts:", data.data);
+        setAdAccounts(data.data);
+      });
   }
 
   // on page load wait for one second and then call getAdAccounts
   useEffect(() => {
-    mySession && mySession.access_token !== undefined && getAdAccounts();
+    mySession && mySession.accessToken !== undefined && getAdAccounts();
   }, [mySession]);
 
   useEffect(() => {
@@ -58,18 +72,29 @@ const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
       setSelectedAdAccountId(GetCookie("ad_account_id") || "");
   }, []);
 
+  // set selected account id in local storage
+  useEffect(() => {
+    selectedAdAccountId &&
+      localStorage.setItem("ad_account_id", selectedAdAccountId);
+  }, [selectedAdAccountId]);
+
   // if there is a session save access token in cookie, else remove the cookie
   useEffect(() => {
     if (mySession) {
       SetCookie(
         "access_token",
-        (mySession && mySession.access_token) || "",
+        (mySession && mySession.accessToken) || "",
         86400,
       );
     } else {
       SetCookie("access_token", "", 0);
     }
   }, [mySession]);
+
+  // in a use effect find value of ad account id in local storage and log it
+  useEffect(() => {
+    console.log("ad_account_id: ", localStorage.getItem("ad_account_id"));
+  }, []);
 
   return (
     <AuthLayout>
@@ -84,29 +109,35 @@ const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
             <p className="text-base text-semibold text-zinc-900">
               Facebook Ads
             </p>
-            {adAccounts && adAccounts.length > 0 ? (
-              <Select
-                value={selectedAdAccountId}
-                onValueChange={setSelectedAdAccountId}
-              >
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Select an Ad Account" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {adAccounts.map((account: any) => (
-                      <SelectItem key={account.id} value={account.id}>
-                        {account.name} - {account.account_id}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+            {(adAccounts && adAccounts.length > 0) ||
+            localStorage.getItem("ad_account_id") !== null ? (
+              <div>
+                <Select
+                  value={
+                    selectedAdAccountId ||
+                    localStorage.getItem("ad_account_id") ||
+                    ""
+                  }
+                  onValueChange={setSelectedAdAccountId}
+                >
+                  <SelectTrigger className="">
+                    <SelectValue placeholder="Select an Ad Account" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {adAccounts.map((account: any) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.name} - {account.account_id}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             ) : (
               <>
                 <div>
-                  <button onClick={getAdAccounts}>Get Ad Accounts</button>
-                  <span>Loading...</span>
+                  <span>Loading Ad Accounts...</span>
                 </div>
               </>
             )}

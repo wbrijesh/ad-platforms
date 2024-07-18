@@ -3,9 +3,12 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import FacebookPageLayout from "@/components/facebook-page-layout";
 import { GetCookie } from "@/lib/cookies";
+import { useRouter } from "next/router";
 
 export default function Index() {
   const { data: session } = useSession();
+
+  const router = useRouter();
 
   const [activeCampaigns, setActiveCampaigns] = useState<any>();
   const [archivedCampaigns, setArchivedCampaigns] = useState<any>();
@@ -17,51 +20,33 @@ export default function Index() {
   }, [session]);
 
   function getActiveCampaigns() {
-    fetch(`http://localhost:4000/v1/fb/campaigns-active`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + GetCookie("ad_platforms_token"),
-        access_token: mySession && mySession.access_token,
-        ad_account_id: GetCookie("ad_account_id") || "",
-      },
-    })
+    fetch(
+      `https://graph.facebook.com/v19.0/${GetCookie("ad_account_id")}/campaigns?fields=id,name,status&effective_status=['ACTIVE']&access_token=${mySession.accessToken}`,
+    )
       .then((response) => response.json())
-      .then((data) => setActiveCampaigns({ campaigns: data }));
+      .then((data) => setActiveCampaigns(data.data));
   }
 
   function getArchivedCampaigns() {
-    fetch(`http://localhost:4000/v1/fb/campaigns-archived`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + GetCookie("ad_platforms_token"),
-        access_token: mySession && mySession.access_token,
-        ad_account_id: GetCookie("ad_account_id") || "",
-      },
-    })
+    fetch(
+      `https://graph.facebook.com/v19.0/${GetCookie("ad_account_id")}/campaigns?fields=id,name,status&effective_status=["ARCHIVED"]&access_token=${mySession.accessToken}`,
+    )
       .then((response) => response.json())
-      .then((data) => setArchivedCampaigns({ campaigns: data }));
+      .then((data) => setArchivedCampaigns(data.data));
   }
 
   function getPausedCampaigns() {
-    fetch(`http://localhost:4000/v1/fb/campaigns-paused`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + GetCookie("ad_platforms_token"),
-        access_token: mySession && mySession.access_token,
-        ad_account_id: GetCookie("ad_account_id") || "",
-      },
-    })
+    fetch(
+      `https://graph.facebook.com/v19.0/${GetCookie("ad_account_id")}/campaigns?fields=id,name,status&effective_status=["PAUSED"]&access_token=${mySession.accessToken}`,
+    )
       .then((response) => response.json())
-      .then((data) => setPausedCampaigns({ campaigns: data }));
+      .then((data) => setPausedCampaigns(data.data));
   }
 
   function GetAllCampaigns() {
-    mySession && mySession.access_token && getActiveCampaigns();
-    mySession && mySession.access_token && getArchivedCampaigns();
-    mySession && mySession.access_token && getPausedCampaigns();
+    mySession && mySession.accessToken && getActiveCampaigns();
+    mySession && mySession.accessToken && getArchivedCampaigns();
+    mySession && mySession.accessToken && getPausedCampaigns();
   }
 
   const [secondsSincePageLoad, setSecondsSincePageLoad] = useState<number>(0);
@@ -86,6 +71,15 @@ export default function Index() {
     <FacebookPageLayout>
       {session && (
         <>
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-medium mb-4">Campaigns</h1>
+            <button
+              className="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm py-1.5 px-2 rounded"
+              onClick={() => router.push("/fb/campaigns/new")}
+            >
+              New Campaign
+            </button>
+          </div>
           {GetCookie("ad_account_id") && (
             <>
               {!activeCampaigns && !archivedCampaigns && !pausedCampaigns && (

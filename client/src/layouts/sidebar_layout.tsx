@@ -31,8 +31,8 @@ const platforms = [
     current: false,
     subItems: [
       { name: "Campaigns", href: "/fb/campaigns", current: false },
-      { name: "Ad Sets", href: "#", current: false },
-      { name: "Ads", href: "#", current: false },
+      { name: "Ad Sets", href: "/fb/adsets", current: false },
+      { name: "Ads", href: "/fb/ads", current: false },
     ],
   },
   {

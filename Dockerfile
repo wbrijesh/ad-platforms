@@ -16,6 +16,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=build-env /app/main /app/
+COPY --from=build-env ./main ./
 
-ENTRYPOINT ["/app/main"]
+ENTRYPOINT ["./main"]

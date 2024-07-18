@@ -1,20 +1,20 @@
 package main
 
 import (
+	"ad-platforms/internal/auth"
+	"ad-platforms/internal/db"
 	fb_handlers "ad-platforms/internal/fb-handlers"
 	google_handlers "ad-platforms/internal/google-handlers"
-	"github.com/labstack/echo-contrib/echoprometheus"
-	"github.com/prometheus/client_golang/prometheus"
+	"ad-platforms/internal/server"
 	"log"
 	"strconv"
+
+	"github.com/labstack/echo-contrib/echoprometheus"
+	"github.com/prometheus/client_golang/prometheus"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-
-	"ad-platforms/internal/auth"
-	"ad-platforms/internal/db"
-	"ad-platforms/internal/server"
 )
 
 var testMetric = prometheus.NewCounter(
@@ -33,6 +33,8 @@ func main() {
 	middlewareConfig := server.GetMiddlewareConfig()
 	e := echo.New()
 	database := db.GetDBConnection()
+
+	db.CreateUsersTable(database)
 
 	authDbHandler := auth.NewBaseHandler(database)
 
@@ -58,7 +60,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//e.Use(echoprometheus.NewMiddleware("ad_platforms"))
+	// e.Use(echoprometheus.NewMiddleware("ad_platforms"))
 	e.Use(echoprometheus.NewMiddlewareWithConfig(echoprometheus.MiddlewareConfig{
 		Namespace: "ad_platforms",
 		AfterNext: func(c echo.Context, err error) {
