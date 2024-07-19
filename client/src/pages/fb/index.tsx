@@ -1,3 +1,4 @@
+import FacebookPageLayout from "@/components/facebook-page-layout";
 import LoginButton from "@/components/login-btn";
 import AuthLayout from "@/layouts/main";
 import { useSession } from "next-auth/react";

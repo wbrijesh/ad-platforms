@@ -44,7 +44,8 @@ const UserRegistrationPage = () => {
   } = useForm<Inputs>();
 
   function sendRegistrationRequest(user: UserObject) {
-    fetch("http://localhost:4000/v1/register", {
+    // fetch("http://localhost:4000/v1/register", {
+    fetch("https://ads.brijesh.dev/api/v1/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

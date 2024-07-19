@@ -42,7 +42,8 @@ const UserSignInPage = () => {
   } = useForm<Inputs>();
 
   function sendSignInRequest(user: UserObject) {
-    fetch("http://localhost:4000/v1/signin", {
+    // fetch("http://localhost:4000/v1/signin", {
+    fetch("https://ads.brijesh.dev/api/v1/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

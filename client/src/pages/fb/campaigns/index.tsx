@@ -5,6 +5,14 @@ import FacebookPageLayout from "@/components/facebook-page-layout";
 import { GetCookie } from "@/lib/cookies";
 import { useRouter } from "next/router";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 export default function Index() {
   const { data: session } = useSession();
 
@@ -67,6 +75,36 @@ export default function Index() {
     }
   }, [secondsSincePageLoad]);
 
+  async function getCampaignDetails(adAccountId: any, accessToken: any) {
+    const url = `https://graph.facebook.com/v19.0/act_${adAccountId}/campaigns?fields=id,name,status,objective,created_time,updated_time&access_token=${accessToken}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error: ${errorData.error.message}`);
+      }
+
+      const data = await response.json();
+      return data.data; // Facebook Graph API returns data in the 'data' field
+    } catch (error) {
+      console.error("Failed to fetch campaign details:", error);
+      return null;
+    }
+  }
+
+  const adAccountId = GetCookie("ad_account_id");
+  const accessToken = mySession && mySession.accessToken;
+
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+  const [campaignDetails, setCampaignDetails] = useState<any>();
+
   return (
     <FacebookPageLayout>
       {session && (
@@ -82,6 +120,58 @@ export default function Index() {
           </div>
           {GetCookie("ad_account_id") && (
             <>
+              <Select
+                value={selectedCampaignId}
+                onValueChange={(value) => setSelectedCampaignId(value)}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select Campaign" />
+                </SelectTrigger>
+                <SelectContent>
+                  {activeCampaigns &&
+                    activeCampaigns.map((campaign: any) => (
+                      <SelectItem key={campaign.id} value={campaign.id}>
+                        {campaign.name}
+                      </SelectItem>
+                    ))}
+                  {archivedCampaigns &&
+                    archivedCampaigns.map((campaign: any) => (
+                      <SelectItem key={campaign.id} value={campaign.id}>
+                        {campaign.name}
+                      </SelectItem>
+                    ))}
+                  {pausedCampaigns &&
+                    pausedCampaigns.map((campaign: any) => (
+                      <SelectItem key={campaign.id} value={campaign.id}>
+                        {campaign.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+
+              <button
+                className="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm py-1.5 px-2 rounded"
+                onClick={() => {
+                  // getCampaignDetails(selectedCampaignId, accessToken).then(
+                  //   (data) => {
+                  //     setCampaignDetails(data);
+                  //   },
+                  // );
+                  setCampaignDetails(
+                    getCampaignDetails(selectedCampaignId, accessToken),
+                  );
+                }}
+              >
+                Get Campaign Details
+              </button>
+
+              {campaignDetails && (
+                <details>
+                  <summary>Campaign Details</summary>
+                  <pre>{JSON.stringify(campaignDetails, null, 2)}</pre>
+                </details>
+              )}
+
               {!activeCampaigns && !archivedCampaigns && !pausedCampaigns && (
                 <p>Loading campaigns</p>
               )}

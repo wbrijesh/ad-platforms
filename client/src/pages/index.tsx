@@ -4,6 +4,11 @@ import { SetCookie } from "@/lib/cookies";
 const HomePage = () => {
   return (
     <AuthLayout>
+      <div className="flex items-center justify-between px-5 py-3 border-b border-ds-zinc-250 shadow-ds-zinc-150">
+        <p className="text-base text-semibold text-zinc-900">Dashboard</p>
+        <div></div>
+      </div>
+
       <p className="mb-5">
         Todo: Build a non ideal state to select platforms from
       </p>
