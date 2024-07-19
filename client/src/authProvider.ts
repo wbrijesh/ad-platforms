@@ -8,7 +8,7 @@ const CustomFacebookBusinessProvider = {
     url: "https://www.facebook.com/dialog/oauth",
     params: {
       scope:
-        "pages_show_list ads_management business_management pages_read_engagement pages_manage_posts email",
+        "pages_show_list ads_management business_management pages_read_engagement pages_manage_posts email ads_read",
     },
   },
   token: {
