@@ -6,12 +6,22 @@ import { GetCookie } from "@/lib/cookies";
 import { useRouter } from "next/router";
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 
 export default function Index() {
   const { data: session } = useSession();
@@ -99,11 +109,11 @@ export default function Index() {
     }
   }
 
-  const adAccountId = GetCookie("ad_account_id");
-  const accessToken = mySession && mySession.accessToken;
-
-  const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
-  const [campaignDetails, setCampaignDetails] = useState<any>();
+  // const adAccountId = GetCookie("ad_account_id");
+  // const accessToken = mySession && mySession.accessToken;
+  //
+  // const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
+  // const [campaignDetails, setCampaignDetails] = useState<any>();
 
   return (
     <FacebookPageLayout>
@@ -118,93 +128,112 @@ export default function Index() {
               New Campaign
             </button>
           </div>
-          {GetCookie("ad_account_id") && (
-            <>
-              <Select
-                value={selectedCampaignId}
-                onValueChange={(value) => setSelectedCampaignId(value)}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select Campaign" />
-                </SelectTrigger>
-                <SelectContent>
+          {/* {GetCookie("ad_account_id") && ( */}
+          <>
+            {/* <Select */}
+            {/*   value={selectedCampaignId} */}
+            {/*   onValueChange={(value) => setSelectedCampaignId(value)} */}
+            {/* > */}
+            {/*   <SelectTrigger className="w-[180px]"> */}
+            {/*     <SelectValue placeholder="Select Campaign" /> */}
+            {/*   </SelectTrigger> */}
+            {/*   <SelectContent> */}
+            {/*     {activeCampaigns && */}
+            {/*       activeCampaigns.map((campaign: any) => ( */}
+            {/*         <SelectItem key={campaign.id} value={campaign.id}> */}
+            {/*           {campaign.name} */}
+            {/*         </SelectItem> */}
+            {/*       ))} */}
+            {/*     {archivedCampaigns && */}
+            {/*       archivedCampaigns.map((campaign: any) => ( */}
+            {/*         <SelectItem key={campaign.id} value={campaign.id}> */}
+            {/*           {campaign.name} */}
+            {/*         </SelectItem> */}
+            {/*       ))} */}
+            {/*     {pausedCampaigns && */}
+            {/*       pausedCampaigns.map((campaign: any) => ( */}
+            {/*         <SelectItem key={campaign.id} value={campaign.id}> */}
+            {/*           {campaign.name} */}
+            {/*         </SelectItem> */}
+            {/*       ))} */}
+            {/*   </SelectContent> */}
+            {/* </Select> */}
+            {/**/}
+            {/* <button */}
+            {/*   className="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm py-1.5 px-2 rounded" */}
+            {/*   onClick={() => { */}
+            {/*     // getCampaignDetails(selectedCampaignId, accessToken).then( */}
+            {/*     //   (data) => { */}
+            {/*     //     setCampaignDetails(data); */}
+            {/*     //   }, */}
+            {/*     // ); */}
+            {/*     setCampaignDetails( */}
+            {/*       getCampaignDetails(selectedCampaignId, accessToken), */}
+            {/*     ); */}
+            {/*   }} */}
+            {/* > */}
+            {/*   Get Campaign Details */}
+            {/* </button> */}
+            {/**/}
+            {/* {campaignDetails && ( */}
+            {/*   <details> */}
+            {/*     <summary>Campaign Details</summary> */}
+            {/*     <pre>{JSON.stringify(campaignDetails, null, 2)}</pre> */}
+            {/*   </details> */}
+            {/* )} */}
+
+            {!activeCampaigns && !archivedCampaigns && !pausedCampaigns && (
+              <p>Loading campaigns</p>
+            )}
+
+            {(activeCampaigns || archivedCampaigns || pausedCampaigns) && (
+              <Table className="mt-2">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>ID</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {/* <TableRow> */}
+                  {/*   <TableCell className="font-medium">INV001</TableCell> */}
+                  {/*   <TableCell>Paid</TableCell> */}
+                  {/*   <TableCell>Credit Card</TableCell> */}
+                  {/*   <TableCell className="text-right">$250.00</TableCell> */}
+                  {/* </TableRow> */}
+
                   {activeCampaigns &&
                     activeCampaigns.map((campaign: any) => (
-                      <SelectItem key={campaign.id} value={campaign.id}>
-                        {campaign.name}
-                      </SelectItem>
+                      <TableRow key={campaign.id}>
+                        <TableCell>{campaign.name}</TableCell>
+                        <TableCell>{campaign.status}</TableCell>
+                        <TableCell>{campaign.id}</TableCell>
+                      </TableRow>
                     ))}
+
                   {archivedCampaigns &&
                     archivedCampaigns.map((campaign: any) => (
-                      <SelectItem key={campaign.id} value={campaign.id}>
-                        {campaign.name}
-                      </SelectItem>
+                      <TableRow key={campaign.id}>
+                        <TableCell>{campaign.name}</TableCell>
+                        <TableCell>{campaign.status}</TableCell>
+                        <TableCell>{campaign.id}</TableCell>
+                      </TableRow>
                     ))}
+
                   {pausedCampaigns &&
                     pausedCampaigns.map((campaign: any) => (
-                      <SelectItem key={campaign.id} value={campaign.id}>
-                        {campaign.name}
-                      </SelectItem>
+                      <TableRow key={campaign.id}>
+                        <TableCell>{campaign.name}</TableCell>
+                        <TableCell>{campaign.status}</TableCell>
+                        <TableCell>{campaign.id}</TableCell>
+                      </TableRow>
                     ))}
-                </SelectContent>
-              </Select>
-
-              <button
-                className="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm py-1.5 px-2 rounded"
-                onClick={() => {
-                  // getCampaignDetails(selectedCampaignId, accessToken).then(
-                  //   (data) => {
-                  //     setCampaignDetails(data);
-                  //   },
-                  // );
-                  setCampaignDetails(
-                    getCampaignDetails(selectedCampaignId, accessToken),
-                  );
-                }}
-              >
-                Get Campaign Details
-              </button>
-
-              {campaignDetails && (
-                <details>
-                  <summary>Campaign Details</summary>
-                  <pre>{JSON.stringify(campaignDetails, null, 2)}</pre>
-                </details>
-              )}
-
-              {!activeCampaigns && !archivedCampaigns && !pausedCampaigns && (
-                <p>Loading campaigns</p>
-              )}
-
-              {activeCampaigns && (
-                <details className="mb-4">
-                  <summary>Active Campaigns Details</summary>
-
-                  <pre className="mb-4">
-                    {JSON.stringify(activeCampaigns, null, 2)}
-                  </pre>
-                </details>
-              )}
-
-              {archivedCampaigns && (
-                <details className="mb-4">
-                  <summary>Archived Campaigns Details</summary>
-                  <pre className="mb-4">
-                    {JSON.stringify(archivedCampaigns, null, 2)}
-                  </pre>
-                </details>
-              )}
-
-              {pausedCampaigns && (
-                <details className="mb-4">
-                  <summary>Paused Campaigns Details</summary>
-                  <pre className="mb-4">
-                    {JSON.stringify(pausedCampaigns, null, 2)}
-                  </pre>
-                </details>
-              )}
-            </>
-          )}
+                </TableBody>
+              </Table>
+            )}
+          </>
+          {/* )} */}
         </>
       )}
     </FacebookPageLayout>

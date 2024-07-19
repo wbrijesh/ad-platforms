@@ -15,12 +15,13 @@ import {
   LogoutIcon,
 } from "@/components/custom-icons/temporary";
 import { useRouter } from "next/router";
+import { LogOutIcon } from "lucide-react";
+import { SetCookie } from "@/lib/cookies";
 
 const navigation = [
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Settings", href: "#", icon: Cog8ToothIcon, current: false },
-  { name: "Log Out", href: "#", icon: LogoutIcon, current: false },
 ];
 
 const platforms = [
@@ -182,6 +183,21 @@ const DesktopSidebar = ({
                     </Link>
                   </li>
                 ))}
+
+                <li className="flex items-center h-7 w-full">
+                  <button
+                    className={classNames(
+                      "group flex gap-x-3 rounded-md px-2 py-1.5 text-sm w-full text-zinc-700 hover:bg-ds-zinc-250 hover:text-zinc-800",
+                    )}
+                    onClick={() => {
+                      SetCookie("ad_platforms_token", "", 0);
+                      window.location.reload();
+                    }}
+                  >
+                    <LogoutIcon />
+                    Log Out
+                  </button>
+                </li>
               </ul>
             </li>
           </ul>

@@ -12,59 +12,87 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/router";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 const AdsetsTable = ({ adsets }: any) => {
   return (
-    <div className="container mx-auto">
-      <div className="bg-white shadow-md rounded my-6">
-        <table className="min-w-max w-full table-auto">
-          <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 text-left">Campaign ID</th>
-              <th className="py-3 px-6 text-left">Adset ID</th>
-              <th className="py-3 px-6 text-left">Adset Name</th>
-              <th className="py-3 px-6 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {adsets.map((campaign: any) =>
-              campaign.adsets.length === 0 ? (
-                <tr
-                  key={campaign.campaignId}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                >
-                  <td className="py-3 px-6 text-left whitespace-nowrap">
-                    {campaign.campaignId}
-                  </td>
-                  <td className="py-3 px-6 text-left whitespace-nowrap">-</td>
-                  <td className="py-3 px-6 text-left whitespace-nowrap">-</td>
-                  <td className="py-3 px-6 text-left whitespace-nowrap">-</td>
-                </tr>
-              ) : (
-                campaign.adsets.map((adset: any) => (
-                  <tr
-                    key={adset.id}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {campaign.campaignId}
-                    </td>
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {adset.id}
-                    </td>
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {adset.name}
-                    </td>
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {adset.status}
-                    </td>
-                  </tr>
-                ))
-              ),
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Table className="mt-4">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Name</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>ID</TableHead>
+          <TableHead>Campaign</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {adsets.map((campaign: any) =>
+          campaign.adsets.length === 0 ? (
+            <TableRow key={campaign.campaignId}>
+              <TableCell>{campaign.campaignId}</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>-</TableCell>
+            </TableRow>
+          ) : (
+            campaign.adsets.map((adset: any) => (
+              <TableRow key={adset.id}>
+                <TableCell>{adset.name}</TableCell>
+                <TableCell>{adset.status}</TableCell>
+                <TableCell>{adset.id}</TableCell>
+                <TableCell>{campaign.campaignId}</TableCell>
+              </TableRow>
+            ))
+          ),
+        )}
+      </TableBody>
+    </Table>
+  );
+};
+
+const CampaignSelect = ({
+  selectedCampaign,
+  activeCampaigns,
+  pausedCampaigns,
+  archivedCampaigns,
+  setSelectedCampaign,
+}: any) => {
+  return (
+    <Select
+      value={selectedCampaign}
+      onValueChange={(value) => setSelectedCampaign(value)}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select Campaign" />
+      </SelectTrigger>
+      <SelectContent>
+        {activeCampaigns &&
+          activeCampaigns.map((campaign: any) => (
+            <SelectItem key={campaign.id} value={campaign.id}>
+              {campaign.name}
+            </SelectItem>
+          ))}
+        {archivedCampaigns &&
+          archivedCampaigns.map((campaign: any) => (
+            <SelectItem key={campaign.id} value={campaign.id}>
+              {campaign.name}
+            </SelectItem>
+          ))}
+        {pausedCampaigns &&
+          pausedCampaigns.map((campaign: any) => (
+            <SelectItem key={campaign.id} value={campaign.id}>
+              {campaign.name}
+            </SelectItem>
+          ))}
+      </SelectContent>
+    </Select>
   );
 };
 
@@ -165,10 +193,14 @@ export default function Home() {
 
   const [selectedCampaign, setSelectedCampaign] = useState<string>("");
 
+  useEffect(() => {
+    selectedCampaign && getAdsetsForCampaign(selectedCampaign);
+  }, [selectedCampaign]);
+
   return (
     <FacebookPageLayout>
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-medium mb-4">List AdSets</h1>
+        <h1 className="text-xl font-medium mb-4">AdSets</h1>
         <button
           className="bg-slate-700 hover:bg-slate-800 text-white font-semibold text-sm py-1.5 px-2 rounded"
           onClick={() => router.push("/fb/adsets/new")}
@@ -180,44 +212,48 @@ export default function Home() {
       {session && (
         <>
           <form>
-            <Select
-              value={selectedCampaign}
-              onValueChange={(value) => setSelectedCampaign(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select Campaign" />
-              </SelectTrigger>
-              <SelectContent>
-                {activeCampaigns &&
-                  activeCampaigns.map((campaign: any) => (
-                    <SelectItem key={campaign.id} value={campaign.id}>
-                      {campaign.name}
-                    </SelectItem>
-                  ))}
-                {archivedCampaigns &&
-                  archivedCampaigns.map((campaign: any) => (
-                    <SelectItem key={campaign.id} value={campaign.id}>
-                      {campaign.name}
-                    </SelectItem>
-                  ))}
-                {pausedCampaigns &&
-                  pausedCampaigns.map((campaign: any) => (
-                    <SelectItem key={campaign.id} value={campaign.id}>
-                      {campaign.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-            <button
-              type="button"
-              onClick={() => getAdsetsForCampaign(selectedCampaign)}
-              className="bg-blue-500 hover:bg-blue-700 text-white text-sm py-1.5 px-2 rounded mt-2"
-            >
-              Get Adsets for Campaign
-            </button>
+            {!selectedCampaign ? (
+              <div className="flex flex-col items-center justify-center h-[80vh]">
+                <p className="text-xl font-medium mb-4 text-slate-700">
+                  Select a campaign to view adsets
+                </p>
+                <CampaignSelect
+                  selectedCampaign={selectedCampaign}
+                  activeCampaigns={activeCampaigns}
+                  pausedCampaigns={pausedCampaigns}
+                  archivedCampaigns={archivedCampaigns}
+                  setSelectedCampaign={setSelectedCampaign}
+                />
+              </div>
+            ) : (
+              <>
+                <div className="flex justify-end mt-4">
+                  <label className="block text-sm text-slate-700 mb-2">
+                    Selected Campaign
+                  </label>
+                </div>
+                <div className="flex justify-end">
+                  <CampaignSelect
+                    selectedCampaign={selectedCampaign}
+                    activeCampaigns={activeCampaigns}
+                    pausedCampaigns={pausedCampaigns}
+                    archivedCampaigns={archivedCampaigns}
+                    setSelectedCampaign={setSelectedCampaign}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* <button */}
+            {/*   type="button" */}
+            {/*   onClick={() => getAdsetsForCampaign(selectedCampaign)} */}
+            {/*   className="bg-blue-500 hover:bg-blue-700 text-white text-sm py-1.5 px-2 rounded mt-2" */}
+            {/* > */}
+            {/*   Get Adsets for Campaign */}
+            {/* </button> */}
           </form>
 
-          {adSets.length > 0 && <pre>{JSON.stringify(adSets, null, 2)}</pre>}
+          {adSets.length > 0 && <AdsetsTable adsets={adSets} />}
         </>
       )}
     </FacebookPageLayout>

@@ -13,7 +13,44 @@ import {
 import { useRouter } from "next/router";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import AuthLayout from "@/layouts/main";
-import LoginButton from "@/components/login-btn";
+import FbLoginButton from "@/components/login-btn";
+
+const AdAccountSelect = ({
+  adAccounts,
+  selectedAdAccountId,
+  setSelectedAdAccountId,
+}: any) => {
+  return (adAccounts && adAccounts.length > 0) ||
+    localStorage.getItem("ad_account_id") !== null ? (
+    <div>
+      <Select
+        value={
+          selectedAdAccountId || localStorage.getItem("ad_account_id") || ""
+        }
+        onValueChange={setSelectedAdAccountId}
+      >
+        <SelectTrigger className="">
+          <SelectValue placeholder="Select an Ad Account" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {adAccounts.map((account: any) => (
+              <SelectItem key={account.id} value={account.id}>
+                {account.name} - {account.account_id}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  ) : (
+    <>
+      <div>
+        <span>Loading Ad Accounts...</span>
+      </div>
+    </>
+  );
+};
 
 const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -100,7 +137,7 @@ const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
     <AuthLayout>
       {!session && (
         <div className="m-5">
-          <LoginButton />
+          <FbLoginButton />
         </div>
       )}
       {session && (
@@ -109,38 +146,43 @@ const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
             <p className="text-base text-semibold text-zinc-900">
               Facebook Ads
             </p>
-            {(adAccounts && adAccounts.length > 0) ||
-            localStorage.getItem("ad_account_id") !== null ? (
-              <div>
-                <Select
-                  value={
-                    selectedAdAccountId ||
-                    localStorage.getItem("ad_account_id") ||
-                    ""
-                  }
-                  onValueChange={setSelectedAdAccountId}
-                >
-                  <SelectTrigger className="">
-                    <SelectValue placeholder="Select an Ad Account" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {adAccounts.map((account: any) => (
-                        <SelectItem key={account.id} value={account.id}>
-                          {account.name} - {account.account_id}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            ) : (
-              <>
-                <div>
-                  <span>Loading Ad Accounts...</span>
-                </div>
-              </>
-            )}
+            <AdAccountSelect
+              adAccounts={adAccounts}
+              selectedAdAccountId={selectedAdAccountId}
+              setSelectedAdAccountId={setSelectedAdAccountId}
+            />
+            {/* {(adAccounts && adAccounts.length > 0) || */}
+            {/* localStorage.getItem("ad_account_id") !== null ? ( */}
+            {/*   <div> */}
+            {/*     <Select */}
+            {/*       value={ */}
+            {/*         selectedAdAccountId || */}
+            {/*         localStorage.getItem("ad_account_id") || */}
+            {/*         "" */}
+            {/*       } */}
+            {/*       onValueChange={setSelectedAdAccountId} */}
+            {/*     > */}
+            {/*       <SelectTrigger className=""> */}
+            {/*         <SelectValue placeholder="Select an Ad Account" /> */}
+            {/*       </SelectTrigger> */}
+            {/*       <SelectContent> */}
+            {/*         <SelectGroup> */}
+            {/*           {adAccounts.map((account: any) => ( */}
+            {/*             <SelectItem key={account.id} value={account.id}> */}
+            {/*               {account.name} - {account.account_id} */}
+            {/*             </SelectItem> */}
+            {/*           ))} */}
+            {/*         </SelectGroup> */}
+            {/*       </SelectContent> */}
+            {/*     </Select> */}
+            {/*   </div> */}
+            {/* ) : ( */}
+            {/*   <> */}
+            {/*     <div> */}
+            {/*       <span>Loading Ad Accounts...</span> */}
+            {/*     </div> */}
+            {/*   </> */}
+            {/* )} */}
           </div>
         </>
       )}
@@ -150,14 +192,19 @@ const FacebookPageLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="m-5">{children}</div>
         ) : (
           <div className="flex flex-col gap-0 items-center justify-center h-[90vh]">
-            <pre>
-              <code>{JSON.stringify(adAccounts, null, 2)}</code>
-            </pre>
-            <button onClick={getAdAccounts}>Get Ad Accounts</button>
-            <MagnifyingGlassIcon className="h-14 w-14 text-zinc-400" />
-            <p className="text-lg text-semibold text-ds-zinc-900">
-              Please select an Ad Account
+            <MagnifyingGlassIcon className="h-8 w-8 text-zinc-400" />
+            <p className="text-lg text-semibold text-ds-zinc-900 mt-4 mb-2">
+              Please select the Ad Account you want to work with.
             </p>
+            <p className="text-sm text-slate-500 mb-4">
+              You check your Ad Account in your Facebook Business Manager
+              account.
+            </p>
+            <AdAccountSelect
+              adAccounts={adAccounts}
+              selectedAdAccountId={selectedAdAccountId}
+              setSelectedAdAccountId={setSelectedAdAccountId}
+            />
           </div>
         ))}
     </AuthLayout>

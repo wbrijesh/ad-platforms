@@ -1,5 +1,4 @@
 import AuthLayout from "@/layouts/main";
-import { SetCookie } from "@/lib/cookies";
 
 const HomePage = () => {
   return (
@@ -9,18 +8,25 @@ const HomePage = () => {
         <div></div>
       </div>
 
-      <p className="mb-5">
-        Todo: Build a non ideal state to select platforms from
-      </p>
-      <button
-        className="bg-blue-500 px-[8px] py-[6px] rounded transition duration-300 hover:bg-blue-600 text-white text-sm font-medium"
-        onClick={() => {
-          SetCookie("ad_platforms_token", "", 0);
-          window.location.reload();
-        }}
+      <div
+        className="flex items-center justify-center flex-col m-4"
+        style={{ height: "calc(100vh - 50px)" }}
       >
-        Sign Out
-      </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75ZM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 0 1-1.875-1.875V8.625ZM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 0 1 3 19.875v-6.75Z" />
+        </svg>
+
+        <p className="text-xl font-medium mt-3">No Dashboard Available</p>
+
+        <p className="mb-5">
+          Dashboard will be implemented in the future. Stay tuned!
+        </p>
+      </div>
     </AuthLayout>
   );
 };
