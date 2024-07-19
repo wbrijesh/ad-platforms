@@ -98,5 +98,10 @@ func main() {
 	googleRoutes.POST("/create-campaign", google_handlers.CreateGoogleAdsCampaign)
 	googleRoutes.GET("/new-access-token", google_handlers.GenerateAccessFromRefreshToken)
 
+	// health check route
+	e.GET("/health-check", func(c echo.Context) error {
+		return c.JSON(200, map[string]string{"message": "Server is running"})
+	})
+
 	e.Logger.Fatal(e.Start(":" + strconv.Itoa(config.Port)))
 }
